@@ -1,0 +1,34 @@
+##########################
+#
+# This template aims to Orchestrate / Provision Jenkins Deployment
+#
+# @author Muhammet Arslan <muhammet.arsln@gmail.com>
+# @package tools
+# @version 1.0
+#
+##########################
+# [START jenkins_deployment]
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: master
+    spec:
+      containers:
+        - image: geass/jenkins:1.0.1
+          name: jenkins
+          ports:
+            - containerPort: 8080
+              name: http-port
+            - containerPort: 50000
+              name: jnlp-port
+          env:
+            - name: JAVA_OPTS
+              value: -Djenkins.install.runSetupWizard=false
+# [END jenkins_deployment]
